@@ -1,0 +1,64 @@
+.banner-image {
+    display: block;
+    width: 100%;
+    height:auto;
+    margin: 0;
+    padding: 0;
+}
+.column {
+    display: flex;
+    margin-top: 0%;
+    width: 100%;
+    margin: 0%;
+}
+.handbags {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}  
+.watches {
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse; 
+}
+.image {
+    width: 100%;
+    max-width: 720px;
+    height: auto;
+}  
+.description {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 30px;
+}
+.description h2 {
+    font-size: 40px;
+    margin-bottom: 10px;
+    font-family: "Dancing Script", cursive;
+    color: #443327;
+}
+.description p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    color: #6c5b52;
+}
+
+.button {
+    background-color: #d6c5bd;
+    color: #443327;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
+}
+  
+.button:hover {
+    background-color: #e1d3cc;
+}

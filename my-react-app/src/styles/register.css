@@ -1,0 +1,60 @@
+.registration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content:center;
+  height: 75vh;
+  }
+
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  background: #f2e8e4;
+  padding: 30px;
+  border-radius: 20px;
+  width: 330px;
+  }
+
+.registration-form h1{
+  font-family: 'Dancing Script', cursive;
+  color: #524139;
+  font-size: 50px;
+  margin-bottom: 20px;
+  text-align: center; 
+  margin-top: 0; 
+  position: relative; 
+}
+
+.registration-form input {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #8b766d;
+  border-radius: 8px;
+  }
+
+.registration-form button {
+  font-family: 'Dancing Script', cursive;
+  font-size: 20px;
+  background-color: #8b766d;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  }
+
+.registration-form button:hover {
+  background-color: #534236;
+  }
+
+.registration-form p {
+  font-size: 14px;
+}
+
+.registration-form a {
+  color: #8b766d;
+  text-decoration: none;
+  }
+
+.registration-form a:hover {
+  color: #443327;
+  }

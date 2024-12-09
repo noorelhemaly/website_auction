@@ -1,0 +1,22 @@
+.info-section {
+    padding: 40px;
+    background-color: transparent;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.info-content h2 {
+    font-family: "Dancing Script", cursive;
+    font-size: 36px;
+    color: #39312f;
+    margin-bottom: 20px;
+}
+  
+.info-content p {
+    font-family: "Courgette", cursive;
+    font-size: 18px;
+    line-height: 1.8;
+    color: #4b433f;
+    margin-bottom: 15px;
+}
+  
