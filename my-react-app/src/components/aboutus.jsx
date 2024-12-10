@@ -3,8 +3,8 @@ import '../styles/aboutus.css'
 
 const AboutUs = () => {
   return (
-    <div id='about-us' className='info-section'>
-      <div className='info-content'>
+    <div id='about-us' className='info'>
+      <div className='content'>
         <h2>About Us</h2>
         <p>Welcome to LuxeAuction, where luxury meets exclusivity. 
             We are a premier online auction platform dedicated to bring you the finest limited-edition handbags and 

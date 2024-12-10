@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Courgette&family=Dancing+Script:wght@400..700&display=swap');
 .header {
     padding: 0;
     text-align: center;
@@ -16,7 +17,7 @@
 }
 
 .link {
-    font-family: 'Dancing Script', cursive;
+    font-family: 'Courgette';
     color: rgb(77, 57, 57);
     text-decoration: none;
     font-size: 25px;
@@ -40,29 +41,6 @@
 
 .item {
     position: relative;
-}
-
-.menu {
-    position:fixed;
-    align-items:normal;
-    background-color: #f7e9db;
-    padding: 23px;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-}
-
-.menu-link {
-    text-decoration: none;
-    color: #443327;
-    padding: 5px 10px;
-    font-size: 16px;
-    font-family: "Arial", sans-serif;
-}
-  
-.menu-link:hover {
-    background-color: #f3dec6;
-    border-radius: 3px;
 }
 
 @media (max-width: 768px) {

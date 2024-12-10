@@ -1,0 +1,33 @@
+.contact-us {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fdf6ef;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+  
+.contact-us h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 60px;
+    color: #443327;
+}
+  
+.contact-us p {
+    font-family: 'Courgette';
+    font-size: 21px;
+    color: #6c5b52;
+}
+
+.contact-details {
+    display: flex;
+    flex-direction: column;
+}
+.contact-details h3 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 30px;
+    color: #443327;
+    padding: 0%;
+    margin: 0%;
+}

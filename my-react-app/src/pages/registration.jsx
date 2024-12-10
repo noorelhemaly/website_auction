@@ -16,11 +16,12 @@ const Register = () => {
 
         <input type='password' placeholder='Password' required />
 
-        <button type='submit'>Create Account</button>
+        <button type='submit'>Submit</button>
 
         <p>
-          Already have an account? <a href='/login'>Login here</a>
+          Already have an account? <a href='/user/login'>Login here</a>
         </p>
+
       </form>
     </div>
 )}

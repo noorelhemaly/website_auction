@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Courgette&family=Dancing+Script:wght@400..700&display=swap');
 .login {
   display: flex;
   flex-direction: column;
@@ -6,16 +7,17 @@
   height: 75vh;
 }
 
-.login-form {
+.loginform {
   display: flex;
   flex-direction: column;
-  background: #f2e8e4;
+  background: #fdf6ef;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 30px;
   border-radius: 20px;
   width: 330px;
 }
 
-.login-form h1 {
+.loginform h1 {
   font-family: 'Dancing Script', cursive;
   color: #524139;
   font-size: 50px;
@@ -25,37 +27,37 @@
   position: relative; 
 }
 
-
-.login-form input {
+.loginform input {
   padding: 10px;
   margin-bottom: 15px;
   border: 1px solid #8b766d;
   border-radius: 8px;
 }
 
-.login-form button {
-  font-family: 'Dancing Script', cursive;
-  font-size: 20px;
-  background-color: #8b766d;
+.loginform button {
+  font-family: 'Courgette';
+  font-size: 17px;
+  padding: 6px;
+  background-color: #726159;
   color: white;
   border: none;
   border-radius: 10px;
   cursor: pointer;
 }
 
-.login-form button:hover {
+.button:hover {
   background-color: #534236;
 }
 
-.login-form p {
+.loginform p {
   font-size: 14px;
 }
 
-.login-form a {
+.loginform a {
   color: #8b766d;
   text-decoration: none;
-}
+  }
 
-.login-form a:hover {
+.loginform a:hover {
   color: #443327;
-}
+  }

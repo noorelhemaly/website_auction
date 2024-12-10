@@ -9,7 +9,8 @@
 .registration-form {
   display: flex;
   flex-direction: column;
-  background: #f2e8e4;
+  background: #fdf6ef;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 30px;
   border-radius: 20px;
   width: 330px;
@@ -33,9 +34,10 @@
   }
 
 .registration-form button {
-  font-family: 'Dancing Script', cursive;
-  font-size: 20px;
-  background-color: #8b766d;
+  font-family: 'Courgette';
+  font-size: 17px;
+  padding: 6px;
+  background-color: #726159;
   color: white;
   border: none;
   border-radius: 10px;

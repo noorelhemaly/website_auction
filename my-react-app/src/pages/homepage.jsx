@@ -16,16 +16,15 @@ const Home = () => {
         <div className='handbags'>
           <img src={handbagsImage} alt='Handbags' className='image'/>
           <div className='description'>
-            <h2>Explore Our Exquist Bag Collection</h2>
+            <h2>Explore Our Exquist Handbag Collection</h2>
             <p>
-            Hermès bags are the epitome of luxury and craftsmanship, 
-            renowned worldwide for their elegance, exclusivity, and impeccable quality. 
-            Established in 1837, Hermès has maintained its reputation as a symbol of sophistication.
-            Hermès bags to this day are created by skilled artisans, 
-            often taking several days to complete, 
-            making them not just accessories but works of art.
+            Our collection of designer handbags is a celebration of impeccable craftsmanship and timeless elegance. 
+            HandPicked from the world's most iconic brands, each piece tells a story of heritage, exclusivity, and sophistication. 
+            Whether it's the classic allure of Hermès or the bold style of Chanel we bring you only the finest. 
+            At Luxe Auction, authenticity is guaranteed, 
+            and every handbag is more than an accessory it's a masterpiece waiting to be yours.
             </p>
-            <Link to='/handbags/Hermes' className='button'>
+            <Link to='/handbags' className='button'>
             Bags Listings
             </Link>
           </div>
@@ -36,16 +35,16 @@ const Home = () => {
         <div className='watches'>
           <img src={watchesImage} alt='Watches' className='image'/>
           <div className='description'>
-            <h2>Explore Our HandPicked Watch Collection</h2>
+            <h2>Elevate Every Moment With Our Watch Collection</h2>
             <p>
-            Hermès bags are the epitome of luxury and craftsmanship, 
-            renowned worldwide for their elegance, exclusivity, and impeccable quality. 
-            Established in 1837, Hermès has maintained its reputation as a symbol of sophistication.
-            Hermès bags to this day are created by skilled artisans, 
-            often taking several days to complete, 
-            making them not just accessories but works of art.
+            At Luxe Auction, we believe that luxury watches are more than timepieces
+            they are symbols of precision, prestige, and personal style. 
+            Our curated collection features legendary names like Rolex, Patek Philippe, Audemars Piguet, and VanCleef and Arples,
+            renowned for their unmatched craftsmanship and heritage. 
+            Whether you're seeking a statement piece or an investment in timeless elegance, 
+            Luxe Auction offers you guaranteed authenticity and unparalleled quality.
             </p>
-            <Link to='/handbags/Hermes' className='button'>
+            <Link to='/watches' className='button'>
             Watches Listings
             </Link>
           </div>
