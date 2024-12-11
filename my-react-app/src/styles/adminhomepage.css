@@ -1,0 +1,52 @@
+.admin-home {
+  font-family: "Arial", sans-serif;
+  padding: 20px;
+  background-color: #f7ead9;
+}
+
+h1 {
+  font-family: "Dancing Script", cursive;
+  text-align: center;
+  color: #524139;
+}
+
+.admin-section {
+  margin: 20px 0;
+}
+
+h2 {
+  font-family: "Courgette", cursive;
+  color: #726159;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+}
+
+.list li {
+  background-color: #fdf6ef;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.admin-actions {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.button {
+  background-color: #726159;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.button:hover {
+  background-color: #534236;
+}

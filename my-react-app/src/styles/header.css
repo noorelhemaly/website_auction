@@ -42,6 +42,12 @@
 .item {
     position: relative;
 }
+.logout {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+}
 
 @media (max-width: 768px) {
     .links {
