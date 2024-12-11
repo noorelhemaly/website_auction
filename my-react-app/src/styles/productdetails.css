@@ -4,7 +4,7 @@
     align-items: center;
     max-width: 1200px;
     margin: auto;
-  }
+}
   
 .product-image {
     width: 300px;
@@ -38,13 +38,6 @@
     font-family: 'Dancing Font';
     color: #51423c;
     font-size: 18px;
-}
-  
-.product-info strong {
-    margin: 5px 0;
-    font-size: 1rem;
-    color: #51423c;
-    font-weight: bold;
 }
   
 .bidding-button {

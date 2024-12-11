@@ -1,115 +1,98 @@
-import React, { useState } from "react";
-import "../styles/addlisting.css";
+import React, { useState } from 'react'
+import '../styles/addlisting.css'
 
 const CreateListing = () => {
   const [formData, setFormData] = useState({
-    category: "",
-    name: "",
-    brand: "",
-    style: "",
-    size: "",
-    color: "",
-    hardware: "",
-    material: "",
-    startingBid: "",
-    duration: "",
-  });
-
-  const [images, setImages] = useState([]);
-  const [previewImages, setPreviewImages] = useState([]);
+    category: '',
+    name: '',
+    brand: '',
+    style: '',
+    size: '',
+    color: '',
+    hardware: '',
+    material: '',
+    startingBid: '',
+    duration: '',
+    image: null, 
+  })
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+    const { name, value } = e.target
+    setFormData({ ...formData, [name]: value })
+  }
 
   const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    setImages(files);
-
-    // Create previews for the selected images
-    const previews = files.map((file) => URL.createObjectURL(file));
-    setPreviewImages(previews);
-  };
+    setFormData({ ...formData, image: e.target.files[0] })
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    const data = new FormData();
+    const data = new FormData()
     Object.keys(formData).forEach((key) => {
-      data.append(key, formData[key]);
-    });
-
-    images.forEach((image) => {
-      data.append("images", image); // Append each image file
-    });
+      data.append(key, formData[key])
+    })
 
     try {
-      const token = localStorage.getItem("adminToken");
-      const response = await fetch("http://localhost:3001/admin/create_listing", {
-        method: "POST",
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch('http://localhost:3001/admin/create_listing', {
+        method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
         },
         body: data,
-      });
+      })
 
       if (response.ok) {
-        alert("Listing created successfully!");
+        alert('Listing created successfully!')
         setFormData({
-          category: "",
-          name: "",
-          brand: "",
-          style: "",
-          size: "",
-          color: "",
-          hardware: "",
-          material: "",
-          startingBid: "",
-          duration: "",
-        });
-        setImages([]);
-        setPreviewImages([]);
+          category: '',
+          name: '',
+          brand: '',
+          style: '',
+          size: '',
+          color: '',
+          hardware: '',
+          material: '',
+          startingBid: '',
+          duration: '',
+          image: null,
+        })
       } else {
-        const errorMessage = await response.text();
-        alert(`Error: ${errorMessage}`);
+        alert('Failed to create listing.')
       }
     } catch (error) {
-      console.error("Error creating listing:", error.message);
-      alert("Failed to create listing.");
+      console.error('Error creating listing:', error.message)
     }
-  };
+  }
 
   return (
-    <div className="create-listing">
+    <div className='create-listing'>
       <h1>Create New Listing</h1>
-      <form onSubmit={handleSubmit} className="listing-form">
-        {/* Form Inputs */}
+      <form onSubmit={handleSubmit} className='listing-form'>
         <label>
           Category:
-          <input
-            type="text"
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            required
-          />
+          <input 
+          type='text' 
+          name='category' 
+          value={formData.category} 
+          onChange={handleChange} 
+          required />
         </label>
         <label>
           Name:
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
+          <input 
+          type='text' 
+          name='name' 
+          value={formData.name} 
+          onChange={handleChange} 
+          required />
         </label>
         <label>
           Brand:
           <input
-            type="text"
-            name="brand"
+            type='text'
+            name='brand'
             value={formData.brand}
             onChange={handleChange}
             required
@@ -118,8 +101,8 @@ const CreateListing = () => {
         <label>
           Style:
           <input
-            type="text"
-            name="style"
+            type='text'
+            name='style'
             value={formData.style}
             onChange={handleChange}
           />
@@ -127,8 +110,8 @@ const CreateListing = () => {
         <label>
           Size:
           <input
-            type="text"
-            name="size"
+            type='text'
+            name='size'
             value={formData.size}
             onChange={handleChange}
           />
@@ -136,8 +119,8 @@ const CreateListing = () => {
         <label>
           Color:
           <input
-            type="text"
-            name="color"
+            type='text'
+            name='color'
             value={formData.color}
             onChange={handleChange}
           />
@@ -145,8 +128,8 @@ const CreateListing = () => {
         <label>
           Hardware:
           <input
-            type="text"
-            name="hardware"
+            type='text'
+            name='hardware'
             value={formData.hardware}
             onChange={handleChange}
           />
@@ -154,8 +137,8 @@ const CreateListing = () => {
         <label>
           Material:
           <input
-            type="text"
-            name="material"
+            type='text'
+            name='material'
             value={formData.material}
             onChange={handleChange}
           />
@@ -163,8 +146,8 @@ const CreateListing = () => {
         <label>
           Starting Bid (£):
           <input
-            type="number"
-            name="startingBid"
+            type='number'
+            name='startingBid'
             value={formData.startingBid}
             onChange={handleChange}
             required
@@ -173,39 +156,26 @@ const CreateListing = () => {
         <label>
           Duration (Days):
           <input
-            type="number"
-            name="duration"
+            type='number'
+            name='duration'
             value={formData.duration}
             onChange={handleChange}
             required
           />
         </label>
         <label>
-          Images:
-          <input
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={handleImageChange}
-            required
-          />
+          Image:
+          <input 
+          type='file' 
+          name='image' 
+          accept='image/*' 
+          onChange={handleImageChange} 
+          required />
         </label>
-
-        {/* Preview Images */}
-        {previewImages.length > 0 && (
-          <div className="image-preview">
-            {previewImages.map((src, index) => (
-              <img key={index} src={src} alt={`Preview ${index}`} />
-            ))}
-          </div>
-        )}
-
-        <button type="submit" className="submit-btn">
-          Create Listing
-        </button>
+        <button type='submit'>Create Listing</button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default CreateListing;
+export default CreateListing

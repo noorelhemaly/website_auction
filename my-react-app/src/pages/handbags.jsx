@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react"
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import '../styles/handbags.css'
 
 const Handbags = () => {
@@ -9,7 +9,7 @@ const Handbags = () => {
   useEffect(() => {
     const fetchHandbags = async () => {
       try {
-        const response = await fetch("http://localhost:3001/listings/handbags")
+        const response = await fetch('http://localhost:3001/listings/handbags')
         const data = await response.json()
         setHandbags(
           data.map((bag) => ({
@@ -18,7 +18,7 @@ const Handbags = () => {
           }))
         )
       } catch (error) {
-        console.error("Failed to fetch handbags:", error)
+        console.error('Failed to fetch handbags:', error)
       } finally {
         setLoading(false)
       }
@@ -28,14 +28,20 @@ const Handbags = () => {
 
   const calculateRemainingTime = (endAt) => {
     const endTime = new Date(endAt).getTime()
-    const now = new Date().getTime()
-    const difference = endTime - now
-    if (difference <= 0) return "Expired"
-    const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
-    const seconds = Math.floor((difference % (1000 * 60)) / 1000)
-    return `${hours}h ${minutes}m ${seconds}s`
-  }
+    const now = Date.now()
+    const timeLeft = endTime - now
+  
+    if (timeLeft <= 0) {
+      return 'Expired'
+    }
+  
+    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24))
+    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60))
+    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000)
+  
+    return `${days}d ${hours}h ${minutes}m ${seconds}s`
+  }  
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -58,16 +64,16 @@ const Handbags = () => {
   }
 
   return (
-    <div className="listings-page">
+    <div className='listings-page'>
       <h1>Handbags Collection</h1>
-      <div className="listings-grid">
+      <div className='listings-grid'>
       {handbags.map((bag) => (
-      <Link to={`/product/${bag.ID}`} className="listing-card">
+      <Link to={`/product/${bag.ID}`} className='listing-card'>
       <img src={`http://localhost:3001${bag.IMAGE_URL}`} alt={bag.NAME} />
       <h3>{bag.NAME}</h3>
       <p>Starting Bid</p>
-      <p className="price">£{bag.STARTING_BID.toLocaleString()}</p>
-      <p className="timer">Time Remaining: {bag.remainingTime}</p>
+      <p className='price'>£{bag.CURRENT_BID.toLocaleString()}</p>
+      <p className='timer'>Time Remaining: {bag.remainingTime}</p>
       <button>View Details</button>
     </Link>
 ))}

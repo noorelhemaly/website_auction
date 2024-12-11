@@ -1,5 +1,5 @@
-import React from 'react';
-import '../styles/contactus.css'; // Link to your CSS file for styling
+import React from 'react'
+import '../styles/contactus.css' 
 
 const ContactUs = () => {
   return (
@@ -19,4 +19,4 @@ const ContactUs = () => {
     </div>
 )}
 
-export default ContactUs;
+export default ContactUs
