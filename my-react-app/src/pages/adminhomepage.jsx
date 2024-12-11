@@ -5,58 +5,59 @@ import "../styles/adminhomepage.css";
 const AdminHomePage = () => {
   const [users, setUsers] = useState([]);
   const [listings, setListings] = useState([]);
-  const [loadingUsers, setLoadingUsers] = useState(true);
-  const [loadingListings, setLoadingListings] = useState(true);
+  const [loading, setLoading] = useState({ users: true, listings: true });
   const navigate = useNavigate();
 
-  // Fetch users
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const token = localStorage.getItem("adminToken");
-        const response = await fetch("http://localhost:3001/admin/view_users", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (!response.ok) throw new Error("Failed to fetch users.");
-        const data = await response.json();
-        setUsers(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoadingUsers(false);
-      }
-    };
-    fetchUsers();
-  }, []);
+  // Fetch Users
+  const fetchUsers = () => {
+    const token = localStorage.getItem("adminToken");
+    if (!token) {
+      console.error("Admin token not found.");
+      return;
+    }
 
-  // Fetch listings
+    fetch("http://localhost:3001/admin/view_users", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch users.");
+        }
+        return response.json();
+      })
+      .then((data) => setUsers(data))
+      .catch((error) => console.error("Error fetching users:", error.message))
+      .finally(() => setLoading((prev) => ({ ...prev, users: false })));
+  };
+
+  // Fetch Listings
+  const fetchListings = () => {
+    const token = localStorage.getItem("adminToken");
+    if (!token) {
+      console.error("Admin token not found.");
+      return;
+    }
+
+    fetch("http://localhost:3001/admin/all_listings", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch listings.");
+        }
+        return response.json();
+      })
+      .then((data) => setListings(data))
+      .catch((error) => console.error("Error fetching listings:", error.message))
+      .finally(() => setLoading((prev) => ({ ...prev, listings: false })));
+  };
+
   useEffect(() => {
-    const fetchListings = async () => {
-      try {
-        const token = localStorage.getItem("adminToken");
-        const response = await fetch("http://localhost:3001/admin/all_listings", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (!response.ok) throw new Error("Failed to fetch listings.");
-        const data = await response.json();
-        setListings(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoadingListings(false);
-      }
-    };
+    fetchUsers();
     fetchListings();
   }, []);
 
-  // Handle Add Listing Navigation
-  const handleAddListing = () => {
-    navigate("/admin/create_listing");
-  };
+  const handleAddListing = () => navigate("/admin/create_listing");
 
   return (
     <div className="admin-home">
@@ -65,13 +66,15 @@ const AdminHomePage = () => {
       {/* Users Section */}
       <div className="admin-section">
         <h2>Registered Users</h2>
-        {loadingUsers ? (
+        {loading.users ? (
           <p>Loading users...</p>
         ) : users.length > 0 ? (
           <ul className="list">
             {users.map((user) => (
               <li key={user.ID}>
-                {user.NAME} - {user.EMAIL}
+                <strong>Name:</strong> {user.NAME} <br />
+                <strong>Email:</strong> {user.EMAIL} <br />
+                <strong>ID Number:</strong> {user.IDNUMBER}
               </li>
             ))}
           </ul>
@@ -83,7 +86,7 @@ const AdminHomePage = () => {
       {/* Listings Section */}
       <div className="admin-section">
         <h2>Listings</h2>
-        {loadingListings ? (
+        {loading.listings ? (
           <p>Loading listings...</p>
         ) : listings.length > 0 ? (
           <ul className="list">

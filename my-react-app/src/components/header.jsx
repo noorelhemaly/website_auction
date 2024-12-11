@@ -9,7 +9,6 @@ const Header = () => {
   const [userType, setUserType] = useState("guest");
   const navigate = useNavigate();
 
-  // Check tokens and update `userType`
   useEffect(() => {
     const adminToken = localStorage.getItem("adminToken");
     const userToken = localStorage.getItem("userToken");
