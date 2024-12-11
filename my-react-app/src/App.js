@@ -10,6 +10,7 @@ import AboutUs from "./components/aboutus"
 import ContactUs from "./components/contactus"
 import AddListing from "./pages/addlisting"
 import AdminHomePage from "./pages/adminhomepage"
+import ProductDetails from "./pages/productdetail"
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/admin/create_listing" element={<AddListing />} />
         <Route path="/admin/home" element={ <AdminHomePage />}/>
+        <Route path="/product/:id" element={<ProductDetails />} />
 
       </Routes>
     </Router>

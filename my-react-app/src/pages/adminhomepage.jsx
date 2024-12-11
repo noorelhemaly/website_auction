@@ -9,47 +9,71 @@ const AdminHomePage = () => {
   const navigate = useNavigate();
 
   // Fetch Users
-  const fetchUsers = () => {
+  const fetchUsers = async () => {
     const token = localStorage.getItem("adminToken");
     if (!token) {
-      console.error("Admin token not found.");
+      alert("Session expired. Please log in again.");
+      navigate("/login");
       return;
     }
 
-    fetch("http://localhost:3001/admin/view_users", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch users.");
-        }
-        return response.json();
-      })
-      .then((data) => setUsers(data))
-      .catch((error) => console.error("Error fetching users:", error.message))
-      .finally(() => setLoading((prev) => ({ ...prev, users: false })));
+    try {
+      const response = await fetch("http://localhost:3001/admin/view_users", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(errorMessage || "Failed to fetch users.");
+      }
+
+      const data = await response.json();
+      setUsers(data);
+    } catch (error) {
+      console.error("Error fetching users:", error.message);
+    } finally {
+      setLoading((prev) => ({ ...prev, users: false }));
+    }
   };
 
   // Fetch Listings
-  const fetchListings = () => {
+  const fetchListings = async () => {
     const token = localStorage.getItem("adminToken");
     if (!token) {
-      console.error("Admin token not found.");
+      alert("Session expired. Please log in again.");
+      navigate("/login");
       return;
     }
 
-    fetch("http://localhost:3001/admin/all_listings", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch listings.");
-        }
-        return response.json();
-      })
-      .then((data) => setListings(data))
-      .catch((error) => console.error("Error fetching listings:", error.message))
-      .finally(() => setLoading((prev) => ({ ...prev, listings: false })));
+    try {
+      const response = await fetch("http://localhost:3001/admin/all_listings", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(errorMessage || "Failed to fetch listings.");
+      }
+
+      const data = await response.json();
+      setListings(data);
+    } catch (error) {
+      console.error("Error fetching listings:", error.message);
+    } finally {
+      setLoading((prev) => ({ ...prev, listings: false }));
+    }
+  };
+
+  // Refresh Users and Listings
+  const handleRefresh = () => {
+    setLoading({ users: true, listings: true });
+    fetchUsers();
+    fetchListings();
+  };
+
+  // Add Listing Button
+  const handleAddListing = () => {
+    navigate("/admin/create_listing");
   };
 
   useEffect(() => {
@@ -57,11 +81,14 @@ const AdminHomePage = () => {
     fetchListings();
   }, []);
 
-  const handleAddListing = () => navigate("/admin/create_listing");
-
   return (
     <div className="admin-home">
       <h1>Welcome, Admin</h1>
+
+      {/* Refresh Button */}
+      <div className="refresh-button">
+        <button onClick={handleRefresh}>Refresh Data</button>
+      </div>
 
       {/* Users Section */}
       <div className="admin-section">
@@ -92,20 +119,15 @@ const AdminHomePage = () => {
           <ul className="list">
             {listings.map((listing) => (
               <li key={listing.ID}>
-                {listing.NAME} - {listing.CATEGORY} - ${listing.STARTING_BID}
+                <strong>Name:</strong> {listing.NAME} <br />
+                <strong>Category:</strong> {listing.CATEGORY} <br />
+                <strong>Starting Bid:</strong> ${listing.STARTING_BID} <br />
               </li>
             ))}
           </ul>
         ) : (
           <p>No listings found.</p>
         )}
-      </div>
-
-      {/* Add Listing Button */}
-      <div className="admin-actions">
-        <button onClick={handleAddListing} className="button">
-          Add New Listing
-        </button>
       </div>
     </div>
   );

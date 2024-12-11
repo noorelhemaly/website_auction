@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Courgette&family=Dancing+Script:wght@400..700&display=swap');
+
+.listings-page h1 {
+    font-size: 60px;
+    color: #412e21;
+    margin-bottom: 30px;
+    font-family: 'Dancing Script';
+}
+
+.listings-grid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 10px;
+}
+
+.listing-card {
+    background-color: #f7e9db; 
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    width:250px;
+    margin: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    padding: 20px;
+    transition: transform 0.5s, box-shadow 0.5s;
+    text-decoration: none;
+}
+
+.listing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.listing-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: contain;
+}
+
+.listing-card h3 {
+    font-size: 20px;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: #5a4840;
+    align-content: center;
+    padding: 5px;
+    margin: 5px;
+}
+
+.listing-card p {
+    padding: 5px;
+    margin: 0px;
+    font-size: 22px;
+    color: #5a4840;
+    align-content: center;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.listing-card .price {
+    font-size: 20px;
+    color: #3c2d27;
+    font-weight: bold;
+    margin: 10px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.listing-card button {
+    font-size: 15px;
+    padding: 10px 15px;
+    background-color: #7d2c26; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.listing-card button:hover {
+    background-color: #4d1a19; 
+}

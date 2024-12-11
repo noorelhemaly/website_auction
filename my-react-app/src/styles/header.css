@@ -17,10 +17,11 @@
 }
 
 .link {
-    font-family: 'Courgette';
+    font-family: "Dancing", cursive;
+    font-weight: bold;
     color: rgb(77, 57, 57);
     text-decoration: none;
-    font-size: 25px;
+    font-size: 26px;
     padding: 13px 10px;
     display: flex;
     align-items: center;

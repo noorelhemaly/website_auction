@@ -1,159 +1,209 @@
 import React, { useState } from "react";
+import "../styles/addlisting.css";
 
 const CreateListing = () => {
-  const [category, setCategory] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [name, setName] = useState("");
-  const [brand, setBrand] = useState("");
-  const [style, setStyle] = useState("");
-  const [size, setSize] = useState("");
-  const [color, setColor] = useState("");
-  const [hardware, setHardware] = useState("");
-  const [material, setMaterial] = useState("");
-  const [startingBid, setStartingBid] = useState("");
-  const [duration, setDuration] = useState("");
-  const [message, setMessage] = useState("");
+  const [formData, setFormData] = useState({
+    category: "",
+    name: "",
+    brand: "",
+    style: "",
+    size: "",
+    color: "",
+    hardware: "",
+    material: "",
+    startingBid: "",
+    duration: "",
+  });
 
-  const createListing = () => {
-    const token = localStorage.getItem("adminToken");
+  const [images, setImages] = useState([]);
+  const [previewImages, setPreviewImages] = useState([]);
 
-    fetch("http://localhost:3001/admin/create_listing", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        category,
-        imageUrl,
-        name,
-        brand,
-        style,
-        size,
-        color,
-        hardware,
-        material,
-        startingBid,
-        duration,
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Failed to create listing. Status code: ${response.status}`);
-        }
-        setMessage("Listing created successfully!");
-        alert("Listing created successfully!");
-        // Reset form
-        setCategory("");
-        setImageUrl("");
-        setName("");
-        setBrand("");
-        setStyle("");
-        setSize("");
-        setColor("");
-        setHardware("");
-        setMaterial("");
-        setStartingBid("");
-        setDuration("");
-      })
-      .catch((error) => {
-        setMessage(`Error: ${error.message}`);
-        alert(error.message);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setImages(files);
+
+    // Create previews for the selected images
+    const previews = files.map((file) => URL.createObjectURL(file));
+    setPreviewImages(previews);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const data = new FormData();
+    Object.keys(formData).forEach((key) => {
+      data.append(key, formData[key]);
+    });
+
+    images.forEach((image) => {
+      data.append("images", image); // Append each image file
+    });
+
+    try {
+      const token = localStorage.getItem("adminToken");
+      const response = await fetch("http://localhost:3001/admin/create_listing", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: data,
       });
+
+      if (response.ok) {
+        alert("Listing created successfully!");
+        setFormData({
+          category: "",
+          name: "",
+          brand: "",
+          style: "",
+          size: "",
+          color: "",
+          hardware: "",
+          material: "",
+          startingBid: "",
+          duration: "",
+        });
+        setImages([]);
+        setPreviewImages([]);
+      } else {
+        const errorMessage = await response.text();
+        alert(`Error: ${errorMessage}`);
+      }
+    } catch (error) {
+      console.error("Error creating listing:", error.message);
+      alert("Failed to create listing.");
+    }
   };
 
   return (
-    <div className="form-section">
-      <h3>Create a New Listing</h3>
-      <form>
-        <input
-          type="text"
-          placeholder="Category"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          required
-        />
-        <br />
-        <input
-          type="text"
-          placeholder="Image URL"
-          value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
-          required
-        />
-        <br />
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <br />
-        <input
-          type="text"
-          placeholder="Brand"
-          value={brand}
-          onChange={(e) => setBrand(e.target.value)}
-          required
-        />
-        <br />
-        <input
-          type="text"
-          placeholder="Style"
-          value={style}
-          onChange={(e) => setStyle(e.target.value)}
-        />
-        <br />
-        <input
-          type="text"
-          placeholder="Size"
-          value={size}
-          onChange={(e) => setSize(e.target.value)}
-        />
-        <br />
-        <input
-          type="text"
-          placeholder="Color"
-          value={color}
-          onChange={(e) => setColor(e.target.value)}
-        />
-        <br />
-        <input
-          type="text"
-          placeholder="Hardware"
-          value={hardware}
-          onChange={(e) => setHardware(e.target.value)}
-        />
-        <br />
-        <input
-          type="text"
-          placeholder="Material"
-          value={material}
-          onChange={(e) => setMaterial(e.target.value)}
-        />
-        <br />
-        <input
-          type="number"
-          placeholder="Starting Bid"
-          value={startingBid}
-          onChange={(e) => setStartingBid(e.target.value)}
-          required
-        />
-        <br />
-        <input
-          type="number"
-          placeholder="Duration (days)"
-          value={duration}
-          onChange={(e) => setDuration(e.target.value)}
-          required
-        />
-        <br />
-        <button type="button" onClick={createListing}>
+    <div className="create-listing">
+      <h1>Create New Listing</h1>
+      <form onSubmit={handleSubmit} className="listing-form">
+        {/* Form Inputs */}
+        <label>
+          Category:
+          <input
+            type="text"
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <label>
+          Name:
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <label>
+          Brand:
+          <input
+            type="text"
+            name="brand"
+            value={formData.brand}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <label>
+          Style:
+          <input
+            type="text"
+            name="style"
+            value={formData.style}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Size:
+          <input
+            type="text"
+            name="size"
+            value={formData.size}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Color:
+          <input
+            type="text"
+            name="color"
+            value={formData.color}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Hardware:
+          <input
+            type="text"
+            name="hardware"
+            value={formData.hardware}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Material:
+          <input
+            type="text"
+            name="material"
+            value={formData.material}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Starting Bid (£):
+          <input
+            type="number"
+            name="startingBid"
+            value={formData.startingBid}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <label>
+          Duration (Days):
+          <input
+            type="number"
+            name="duration"
+            value={formData.duration}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <label>
+          Images:
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleImageChange}
+            required
+          />
+        </label>
+
+        {/* Preview Images */}
+        {previewImages.length > 0 && (
+          <div className="image-preview">
+            {previewImages.map((src, index) => (
+              <img key={index} src={src} alt={`Preview ${index}`} />
+            ))}
+          </div>
+        )}
+
+        <button type="submit" className="submit-btn">
           Create Listing
         </button>
       </form>
-      {message && <p>{message}</p>}
     </div>
   );
 };
