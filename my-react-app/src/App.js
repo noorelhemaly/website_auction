@@ -12,6 +12,8 @@ import AddListing from './pages/addlisting'
 import AdminHomePage from './pages/adminhomepage'
 import ProductDetails from './pages/productdetail'
 import Watches from './pages/watches'
+import ListingBids from './pages/listingbids'
+import UserBids from './pages/userbids'
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
         <Route path='/admin/create_listing' element={<AddListing />} />
         <Route path='/admin/home' element={ <AdminHomePage />}/>
         <Route path='/product/:id' element={<ProductDetails />} />
+        <Route path='/admin/bids' element={<ListingBids />} />
+        <Route path='/user/bids' element={<UserBids />} />
 
       </Routes>
     </Router>

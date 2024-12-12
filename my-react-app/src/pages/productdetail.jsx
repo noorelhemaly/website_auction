@@ -3,12 +3,16 @@ import { useParams } from 'react-router-dom'
 import '../styles/productdetails.css'
 
 const ProductDetails = () => {
-  const { id } = useParams() 
+  const { id } = useParams() // Get the product ID from the URL
   const [product, setProduct] = useState(null)
+  const [bidHistory, setBidHistory] = useState([])
   const [remainingTime, setRemainingTime] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [bidAmount, setBidAmount] = useState('')
+  const [message, setMessage] = useState('')
 
+  // Fetch product details
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
@@ -27,9 +31,24 @@ const ProductDetails = () => {
       }
     }
 
+    const fetchBidHistory = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/listing/${id}/bids`)
+        if (!response.ok) {
+          throw new Error('Failed to fetch bid history.')
+        }
+        const data = await response.json()
+        setBidHistory(data)
+      } catch (error) {
+        console.error('Error fetching bid history:', error.message)
+      }
+    }
+
     fetchProductDetails()
+    fetchBidHistory()
   }, [id])
 
+  // Calculate and update remaining time
   const updateRemainingTime = (endAt) => {
     const endTime = new Date(endAt).getTime()
     const now = new Date().getTime()
@@ -48,6 +67,7 @@ const ProductDetails = () => {
     setRemainingTime(`${days}d ${hours}h ${minutes}m ${seconds}s`)
   }
 
+  // Update remaining time every second
   useEffect(() => {
     const interval = setInterval(() => {
       if (product) {
@@ -58,12 +78,51 @@ const ProductDetails = () => {
     return () => clearInterval(interval)
   }, [product])
 
+  // Place a Bid
+  const placeBid = async () => {
+    setMessage('') // Clear previous messages
+    if (!bidAmount || parseFloat(bidAmount) <= product.CURRENT_BID) {
+      setMessage(`Your bid must be higher than the current bid of £${product.CURRENT_BID}`)
+      return
+    }
+
+    try {
+      const token = localStorage.getItem('userToken')
+      const response = await fetch('http://localhost:3001/bid', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          listingId: product.ID,
+          bidAmount: parseFloat(bidAmount),
+        }),
+      })
+
+      if (response.ok) {
+        const updatedProduct = await fetch(`http://localhost:3001/listing/${id}`).then((res) => res.json()) // Refresh product data
+        const updatedBids = await fetch(`http://localhost:3001/listing/${id}/bids`).then((res) => res.json()) // Refresh bid history
+        setProduct(updatedProduct)
+        setBidHistory(updatedBids)
+        setMessage('Bid placed successfully!')
+        setBidAmount('') // Clear input
+      } else {
+        const errorText = await response.text()
+        setMessage(`Error: ${errorText}`)
+      }
+    } catch (error) {
+      console.error('Error placing bid:', error.message)
+      setMessage('Failed to place bid. Please try again.')
+    }
+  }
+
   if (loading) {
     return <p>Loading product details...</p>
   }
 
   if (error) {
-    return <p className='error'>{error}</p>
+    return <p className="error">{error}</p>
   }
 
   if (!product) {
@@ -71,15 +130,15 @@ const ProductDetails = () => {
   }
 
   return (
-    <div className='product-details'>
+    <div className="product-details">
       <img
         src={`http://localhost:3001${product.IMAGE_URL}`}
         alt={product.NAME}
-        className='product-image'
+        className="product-image"
       />
-      <div className='product-info'>
+      <div className="product-info">
         <h1>{product.NAME}</h1>
-        <table className='product-info'>
+        <table className="product-info-table">
           <tbody>
             <tr>
               <td>Brand</td>
@@ -115,9 +174,43 @@ const ProductDetails = () => {
             </tr>
           </tbody>
         </table>
-        <button className='bidding-button' onClick={() => alert('Bid Now clicked!')}>
-          Bid Now
-        </button>
+        <div className="bid-section">
+          <input
+            type="number"
+            placeholder="Enter your bid"
+            value={bidAmount}
+            onChange={(e) => setBidAmount(e.target.value)}
+            className="bid-input"
+          />
+          <button onClick={placeBid} className="bid-button">
+            Place Bid
+          </button>
+        </div>
+        {message && <p className="bid-message">{message}</p>}
+      </div>
+
+      <div className="bid-history">
+        <h2>Bid History</h2>
+        {bidHistory.length > 0 ? (
+          <table className="bids-table">
+            <thead>
+              <tr>
+                <th>Bid Amount (£)</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {bidHistory.map((bid, index) => (
+                <tr key={index}>
+                  <td>£{bid.BID_AMOUNT}</td>
+                  <td>{new Date(bid.CREATED_AT).toLocaleString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p>No bids placed yet.</p>
+        )}
       </div>
     </div>
   )

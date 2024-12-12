@@ -63,6 +63,9 @@ const Header = () => {
             <Link to='/admin/create_listing' className='link'>
               Create Listing
             </Link>
+            <Link to='/admin/bids' className='link'>
+              Recent Bids
+            </Link>
           </>
         )}
 

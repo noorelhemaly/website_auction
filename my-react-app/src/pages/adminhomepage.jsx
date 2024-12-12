@@ -3,136 +3,152 @@ import { useNavigate } from 'react-router-dom'
 import '../styles/adminhomepage.css'
 
 const AdminHomePage = () => {
-  const [users, setUsers] = useState([])
   const [listings, setListings] = useState([])
-  const [loading, setLoading] = useState({ users: true, listings: true })
-  const navigate = useNavigate()
-
-  // Fetch Users
-  const fetchUsers = async () => {
-    const token = localStorage.getItem('adminToken')
-    if (!token) {
-      alert('Session expired. Please log in again.')
-      navigate('/login')
-      return
-    }
-
-    try {
-      const response = await fetch('http://localhost:3001/admin/view_users', {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-
-      if (!response.ok) {
-        const errorMessage = await response.text()
-        throw new Error(errorMessage || 'Failed to fetch users.')
-      }
-
-      const data = await response.json()
-      setUsers(data)
-    } catch (error) {
-      console.error('Error fetching users:', error.message)
-    } finally {
-      setLoading((prev) => ({ ...prev, users: false }))
-    }
-  }
+  const [users, setUsers] = useState([])
+  const [loadingListings, setLoadingListings] = useState(true)
+  const [loadingUsers, setLoadingUsers] = useState(true)
 
   // Fetch Listings
   const fetchListings = async () => {
     const token = localStorage.getItem('adminToken')
-    if (!token) {
-      alert('Session expired. Please log in again.')
-      navigate('/login')
-      return
-    }
-
     try {
       const response = await fetch('http://localhost:3001/admin/all_listings', {
         headers: { Authorization: `Bearer ${token}` },
       })
-
       if (!response.ok) {
-        const errorMessage = await response.text()
-        throw new Error(errorMessage || 'Failed to fetch listings.')
+        throw new Error('Failed to fetch listings.')
       }
-
       const data = await response.json()
       setListings(data)
     } catch (error) {
       console.error('Error fetching listings:', error.message)
     } finally {
-      setLoading((prev) => ({ ...prev, listings: false }))
+      setLoadingListings(false)
     }
   }
 
-  // Refresh Users and Listings
-  const handleRefresh = () => {
-    setLoading({ users: true, listings: true })
-    fetchUsers()
-    fetchListings()
+  // Fetch Users
+  const fetchUsers = async () => {
+    const token = localStorage.getItem('adminToken')
+    try {
+      const response = await fetch('http://localhost:3001/admin/view_users', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      if (!response.ok) {
+        throw new Error('Failed to fetch users.')
+      }
+      const data = await response.json()
+      setUsers(data)
+    } catch (error) {
+      console.error('Error fetching users:', error.message)
+    } finally {
+      setLoadingUsers(false)
+    }
   }
 
-  // Add Listing Button
-  const handleAddListing = () => {
-    navigate('/admin/create_listing')
+  // Handle Edit Duration
+  const handleEditDuration = async (id) => {
+    const newDuration = prompt('Enter the additional days to extend:')
+    if (!newDuration || isNaN(newDuration)) {
+      alert('Invalid input. Please enter a valid number.')
+      return
+    }
+
+    const token = localStorage.getItem('adminToken')
+    try {
+      const response = await fetch(`http://localhost:3001/admin/edit_duration/${id}/${newDuration}`, {
+        method: 'PUT',
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      if (response.ok) {
+        alert('Duration updated successfully!')
+        fetchListings() // Refresh listings
+      } else {
+        alert(`Error updating duration: ${await response.text()}`)
+      }
+    } catch (error) {
+      console.error('Error updating duration:', error.message)
+    }
+  }
+
+  // Handle Delete Listing
+  const handleDelete = async (id) => {
+    const token = localStorage.getItem('adminToken')
+    try {
+      const response = await fetch(`http://localhost:3001/admin/delete_listing/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      if (response.ok) {
+        alert('Listing deleted successfully!')
+        fetchListings() // Refresh listings
+      } else {
+        alert(`Error deleting listing: ${await response.text()}`)
+      }
+    } catch (error) {
+      console.error('Error deleting listing:', error.message)
+    }
   }
 
   useEffect(() => {
-    fetchUsers()
     fetchListings()
+    fetchUsers()
   }, [])
 
   return (
-    <div className='admin-home'>
+    <div className='home'>
       <h1>Welcome, Admin</h1>
-
-      {/* Refresh Button */}
-      <div className='refresh-button'>
-        <button onClick={handleRefresh}>Refresh Data</button>
-      </div>
-
-      {/* Users Section */}
+  
       <div className='admin-section'>
         <h2>Registered Users</h2>
-        {loading.users ? (
+        {loadingUsers ? (
           <p>Loading users...</p>
         ) : users.length > 0 ? (
-          <ul className='list'>
+          <div className='users'>
             {users.map((user) => (
-              <li key={user.ID}>
-                <strong>Name:</strong> {user.NAME} <br />
-                <strong>Email:</strong> {user.EMAIL} <br />
-                <strong>ID Number:</strong> {user.IDNUMBER}
-              </li>
+              <div key={user.ID} className='user-card'>
+                <p>Name: {user.NAME}</p>
+                <p>Email: {user.EMAIL}</p>
+                <p>ID Number: {user.IDNUMBER}</p>
+              </div>
             ))}
-          </ul>
+          </div>
         ) : (
           <p>No users found.</p>
         )}
       </div>
-
-      {/* Listings Section */}
+  
       <div className='admin-section'>
         <h2>Listings</h2>
-        {loading.listings ? (
+        {loadingListings ? (
           <p>Loading listings...</p>
         ) : listings.length > 0 ? (
-          <ul className='list'>
+          <div className='listings'>
             {listings.map((listing) => (
-              <li key={listing.ID}>
-                <strong>Name:</strong> {listing.NAME} <br />
-                <strong>Category:</strong> {listing.CATEGORY} <br />
-                <strong>Starting Bid:</strong> ${listing.STARTING_BID} <br />
-                <strong>Duration:</strong> {listing.DURATION} <br />
-                <strong>End Time:</strong> {listing.END_AT} <br />
-              </li>
+              <div key={listing.ID} className='listing-card'>
+                <img src={`http://localhost:3001${listing.IMAGE_URL}`} alt={listing.NAME} className='listing-image' />
+                <div className='listing-info'>
+                  <h3>{listing.NAME}</h3>
+                  <p>Category: {listing.CATEGORY}</p>
+                  <p>Duration: {listing.DURATION} day/s</p>
+                  <p>Ends At: {listing.END_AT}</p>
+                  <p>Starting Bid: £{listing.STARTING_BID}</p>
+                  <p>Current Bid: £{listing.CURRENT_BID}</p>
+                    <button className='extend-duration' onClick={() => handleEditDuration(listing.ID)}>
+                      Extend Duration
+                    </button>
+                    <button className='delete' onClick={() => handleDelete(listing.ID)}>
+                      Delete
+                    </button>
+                  </div>
+                </div>
             ))}
-          </ul>
+          </div>
         ) : (
           <p>No listings found.</p>
         )}
       </div>
     </div>
-  )
+  )  
 }
-
 export default AdminHomePage

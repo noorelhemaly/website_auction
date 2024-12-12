@@ -5,18 +5,19 @@
     color: #412e21;
     margin-bottom: 30px;
     font-family: 'Dancing Script';
+    text-align: center;
 }
 
 .listings-grid {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     flex-wrap: wrap;
     padding: 10px;
 }
 
 .listing-card {
     background-color: #f7e9db; 
-    border: 1px solid #ddd;
+    border: 1px solid #696560;
     border-radius: 20px;
     width:250px;
     margin: 10px;

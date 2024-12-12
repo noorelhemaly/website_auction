@@ -62,3 +62,38 @@
         max-width: 300px;
     }
 }
+.bid-history {
+    margin-top: 20px;
+  }
+  
+  .bid-history h2 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .bid-history table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .bid-history table th,
+  .bid-history table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .bid-history table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+  
+  .bid-history table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .bid-history table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
