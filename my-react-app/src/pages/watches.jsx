@@ -89,7 +89,7 @@ const Watches = () => {
           <Link to={`/product/${watch.ID}`} className='listing-card' key={watch.ID}>
             <img src={`http://localhost:3001${watch.IMAGE_URL}`} alt={watch.NAME} />
             <h3>{watch.NAME}</h3>
-            <p>Starting Bid</p>
+            <p>Current Bid</p>
             <p className='price'>£{watch.CURRENT_BID.toLocaleString()}</p>
             <p className='timer'>Time Remaining: {watch.remainingTime}</p>
             <button>View Details</button>

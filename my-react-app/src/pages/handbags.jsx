@@ -7,7 +7,6 @@ const Handbags = () => {
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
-  // Check for user authentication
   useEffect(() => {
     const token = localStorage.getItem('userToken')
     if (!token) {
@@ -90,7 +89,7 @@ const Handbags = () => {
           <Link to={`/product/${bag.ID}`} className='listing-card' key={bag.ID}>
             <img src={`http://localhost:3001${bag.IMAGE_URL}`} alt={bag.NAME} />
             <h3>{bag.NAME}</h3>
-            <p>Starting Bid</p>
+            <p>Current Bid</p>
             <p className='price'>£{bag.CURRENT_BID.toLocaleString()}</p>
             <p className='timer'>Time Remaining: {bag.remainingTime}</p>
             <button>View Details</button>

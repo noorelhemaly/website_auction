@@ -32,7 +32,6 @@ function App() {
         <Route path='/product/:id' element={<ProductDetails />} />
         <Route path='/admin/bids' element={<ListingBids />} />
         <Route path='/mybids' element={<UserBids />} />
-
       </Routes>
     </Router>
 )}

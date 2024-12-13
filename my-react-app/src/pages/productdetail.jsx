@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import '../styles/productdetails.css'
 
 const ProductDetails = () => {
-  const { id } = useParams() // Get the product ID from the URL
+  const { id } = useParams() 
   const [product, setProduct] = useState(null)
   const [bidHistory, setBidHistory] = useState([])
   const [remainingTime, setRemainingTime] = useState('')
@@ -81,7 +81,7 @@ const ProductDetails = () => {
 
   // Place a Bid
   const placeBid = async () => {
-    setMessage('') // Clear previous messages
+    setMessage('') 
     if (!bidAmount || parseFloat(bidAmount) <= product.CURRENT_BID) {
       setMessage(`Your bid must be higher than the current bid of £${product.CURRENT_BID}`)
       return
@@ -102,8 +102,8 @@ const ProductDetails = () => {
       })
 
       if (response.ok) {
-        const updatedProduct = await fetch(`http://localhost:3001/listing/${id}`).then((res) => res.json()) // Refresh product data
-        const updatedBids = await fetch(`http://localhost:3001/listing/${id}/bids`).then((res) => res.json()) // Refresh bid history
+        const updatedProduct = await fetch(`http://localhost:3001/listing/${id}`).then((res) => res.json()) 
+        const updatedBids = await fetch(`http://localhost:3001/listing/${id}/bids`).then((res) => res.json()) 
         setProduct(updatedProduct)
         setBidHistory(updatedBids)
         setMessage('Bid placed successfully!')
