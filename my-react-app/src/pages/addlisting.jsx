@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import '../styles/addlisting.css'
 
 const CreateListing = () => {
@@ -13,8 +14,20 @@ const CreateListing = () => {
     material: '',
     startingBid: '',
     duration: '',
-    image: null, 
+    image: null,
   })
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const token = localStorage.getItem('adminToken')
+    if (!token) {
+      alert('Unauthorized access. Please log in as admin.')
+      navigate('/login')
+    } else {
+      setIsAuthenticated(true)
+    }
+  }, [navigate])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -66,27 +79,31 @@ const CreateListing = () => {
     }
   }
 
+  if (!isAuthenticated) {
+    return null 
+  }
+
   return (
     <div className='create-listing'>
       <h1>Create New Listing</h1>
       <form onSubmit={handleSubmit} className='listing-form'>
         <label>
           Category:
-          <input 
-          type='text' 
-          name='category' 
-          value={formData.category} 
-          onChange={handleChange} 
-          required />
+          <input
+            type='text'
+            name='category'
+            value={formData.category}
+            onChange={handleChange}
+            required />
         </label>
         <label>
           Name:
-          <input 
-          type='text' 
-          name='name' 
-          value={formData.name} 
-          onChange={handleChange} 
-          required />
+          <input
+            type='text'
+            name='name'
+            value={formData.name}
+            onChange={handleChange}
+            required />
         </label>
         <label>
           Brand:
@@ -96,51 +113,51 @@ const CreateListing = () => {
             value={formData.brand}
             onChange={handleChange}
             required
-          />
+            />
         </label>
         <label>
           Style:
-          <input
-            type='text'
-            name='style'
-            value={formData.style}
-            onChange={handleChange}
+          <input 
+          type='text' 
+          name='style' 
+          value={formData.style} 
+          onChange={handleChange} 
           />
         </label>
         <label>
           Size:
-          <input
-            type='text'
-            name='size'
-            value={formData.size}
-            onChange={handleChange}
+          <input 
+          type='text' 
+          name='size' 
+          value={formData.size} 
+          onChange={handleChange} 
           />
         </label>
         <label>
           Color:
-          <input
-            type='text'
-            name='color'
-            value={formData.color}
-            onChange={handleChange}
+          <input 
+          type='text' 
+          name='color' 
+          value={formData.color} 
+          onChange={handleChange} 
           />
         </label>
         <label>
           Hardware:
-          <input
-            type='text'
-            name='hardware'
-            value={formData.hardware}
-            onChange={handleChange}
+          <input 
+          type='text' 
+          name='hardware' 
+          value={formData.hardware} 
+          onChange={handleChange} 
           />
         </label>
         <label>
           Material:
-          <input
-            type='text'
-            name='material'
-            value={formData.material}
-            onChange={handleChange}
+          <input 
+          type='text' 
+          name='material' 
+          value={formData.material} 
+          onChange={handleChange} 
           />
         </label>
         <label>
@@ -150,8 +167,8 @@ const CreateListing = () => {
             name='startingBid'
             value={formData.startingBid}
             onChange={handleChange}
-            required
-          />
+            required 
+            />
         </label>
         <label>
           Duration (Days):
@@ -160,8 +177,8 @@ const CreateListing = () => {
             name='duration'
             value={formData.duration}
             onChange={handleChange}
-            required
-          />
+            required 
+            />
         </label>
         <label>
           Image:

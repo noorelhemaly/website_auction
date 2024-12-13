@@ -1,15 +1,32 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import '../styles/listingspage.css' 
+import { Link, useNavigate } from 'react-router-dom'
+import '../styles/listingspage.css'
 
 const Watches = () => {
   const [watches, setWatches] = useState([])
   const [loading, setLoading] = useState(true)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const token = localStorage.getItem('userToken')
+    if (!token) {
+      if (!sessionStorage.getItem('alertShown')) {
+        alert('You must log in to access this page.')
+        sessionStorage.setItem('alertShown', true) 
+      }
+      navigate('/register') 
+    }
+  }, [navigate])
 
   useEffect(() => {
     const fetchWatches = async () => {
       try {
-        const response = await fetch('http://localhost:3001/listings/watches')
+        const response = await fetch('http://localhost:3001/listings/watches', {
+          headers: { Authorization: `Bearer ${localStorage.getItem('userToken')}` }, 
+        })
+        if (!response.ok) {
+          throw new Error('Failed to fetch watches.')
+        }
         const data = await response.json()
         setWatches(
           data.map((watch) => ({
@@ -69,7 +86,7 @@ const Watches = () => {
       <h1>Watches Collection</h1>
       <div className='listings-grid'>
         {watches.map((watch) => (
-          <Link to={`/product/${watch.ID}`} className='listing-card'>
+          <Link to={`/product/${watch.ID}`} className='listing-card' key={watch.ID}>
             <img src={`http://localhost:3001${watch.IMAGE_URL}`} alt={watch.NAME} />
             <h3>{watch.NAME}</h3>
             <p>Starting Bid</p>

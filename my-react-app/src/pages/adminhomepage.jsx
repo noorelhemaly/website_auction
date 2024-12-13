@@ -7,17 +7,21 @@ const AdminHomePage = () => {
   const [users, setUsers] = useState([])
   const [loadingListings, setLoadingListings] = useState(true)
   const [loadingUsers, setLoadingUsers] = useState(true)
+  const navigate = useNavigate()
 
-  // Fetch Listings
   const fetchListings = async () => {
     const token = localStorage.getItem('adminToken')
+    if (!token) {
+      alert('Unauthorized access. Please log in as admin.')
+      navigate('/login') 
+      return
+    }
     try {
       const response = await fetch('http://localhost:3001/admin/all_listings', {
         headers: { Authorization: `Bearer ${token}` },
       })
-      if (!response.ok) {
-        throw new Error('Failed to fetch listings.')
-      }
+      if (!response.ok) 
+      throw new Error('Failed to fetch listings.')
       const data = await response.json()
       setListings(data)
     } catch (error) {
@@ -27,16 +31,14 @@ const AdminHomePage = () => {
     }
   }
 
-  // Fetch Users
   const fetchUsers = async () => {
     const token = localStorage.getItem('adminToken')
     try {
       const response = await fetch('http://localhost:3001/admin/view_users', {
         headers: { Authorization: `Bearer ${token}` },
       })
-      if (!response.ok) {
-        throw new Error('Failed to fetch users.')
-      }
+      if (!response.ok) 
+      throw new Error('Failed to fetch users.')
       const data = await response.json()
       setUsers(data)
     } catch (error) {
@@ -46,14 +48,12 @@ const AdminHomePage = () => {
     }
   }
 
-  // Handle Edit Duration
   const handleEditDuration = async (id) => {
     const newDuration = prompt('Enter the additional days to extend:')
     if (!newDuration || isNaN(newDuration)) {
       alert('Invalid input. Please enter a valid number.')
       return
     }
-
     const token = localStorage.getItem('adminToken')
     try {
       const response = await fetch(`http://localhost:3001/admin/edit_duration/${id}/${newDuration}`, {
@@ -62,7 +62,7 @@ const AdminHomePage = () => {
       })
       if (response.ok) {
         alert('Duration updated successfully!')
-        fetchListings() // Refresh listings
+        fetchListings()
       } else {
         alert(`Error updating duration: ${await response.text()}`)
       }
@@ -71,7 +71,6 @@ const AdminHomePage = () => {
     }
   }
 
-  // Handle Delete Listing
   const handleDelete = async (id) => {
     const token = localStorage.getItem('adminToken')
     try {
@@ -81,7 +80,7 @@ const AdminHomePage = () => {
       })
       if (response.ok) {
         alert('Listing deleted successfully!')
-        fetchListings() // Refresh listings
+        fetchListings()
       } else {
         alert(`Error deleting listing: ${await response.text()}`)
       }
@@ -96,7 +95,7 @@ const AdminHomePage = () => {
   }, [])
 
   return (
-    <div className='home'>
+    <div className='admin-home'>
       <h1>Welcome, Admin</h1>
   
       <div className='admin-section'>
@@ -131,17 +130,17 @@ const AdminHomePage = () => {
                   <h3>{listing.NAME}</h3>
                   <p>Category: {listing.CATEGORY}</p>
                   <p>Duration: {listing.DURATION} day/s</p>
-                  <p>Ends At: {listing.END_AT}</p>
+                  <p>Ends At: {new Date(listing.END_AT).toLocaleString()}</p>
                   <p>Starting Bid: £{listing.STARTING_BID}</p>
                   <p>Current Bid: £{listing.CURRENT_BID}</p>
-                    <button className='extend-duration' onClick={() => handleEditDuration(listing.ID)}>
-                      Extend Duration
-                    </button>
-                    <button className='delete' onClick={() => handleDelete(listing.ID)}>
-                      Delete
-                    </button>
-                  </div>
+                  <button className='extend-duration' onClick={() => handleEditDuration(listing.ID)}>
+                    Extend Duration
+                  </button>
+                  <button className='delete' onClick={() => handleDelete(listing.ID)}>
+                    Delete
+                  </button>
                 </div>
+              </div>
             ))}
           </div>
         ) : (
@@ -149,6 +148,7 @@ const AdminHomePage = () => {
         )}
       </div>
     </div>
-  )  
+  )
 }
+
 export default AdminHomePage
