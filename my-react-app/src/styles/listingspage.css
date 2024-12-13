@@ -11,7 +11,7 @@
 .listings-grid {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content:space-evenly;
     padding: 10px;
 }
 
@@ -19,12 +19,11 @@
     background-color: #f7e9db; 
     border: 1px solid #696560;
     border-radius: 20px;
-    margin: 10px;
+    margin: 15px;
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: space-between; 
-    padding: 20px;
     transition: transform 0.5s, box-shadow 0.5s;
     text-decoration: none;
 }
@@ -68,15 +67,28 @@
 
 .listing-card button {
     font-size: 15px;
-    padding: 10px 15px;
-    background-color: #7d2c26; 
+    padding: auto;
+    background-color: #5a1c18; 
     color: white;
     border: none;
+    width: 100%;
     border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
 }
 
 .listing-card button:hover {
-    background-color: #4d1a19; 
+    background-color: #8a2523; 
+}
+
+.listings-grid.expired{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding: 10px;
+}
+
+.listings-grid.expired .listing-card {
+    background-color: #f4e6d8; 
+    opacity: 0.7; 
 }

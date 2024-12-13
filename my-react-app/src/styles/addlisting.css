@@ -1,56 +1,62 @@
 .create-listing {
-  max-width: 800px;
-  margin: 50px auto;
+  max-width: 600px;
+  margin: 40px auto;
   padding: 20px;
-  background-color: #fdf6ef;
+  background-color: #f7e9db;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
 }
 
 .create-listing h1 {
   text-align: center;
-  color: #524139;
-  font-family: "Dancing Script", cursive;
   margin-bottom: 20px;
+  color: #463b36;
+  font-family: 'Courgette', cursive;
+  font-size: 36px;
 }
 
 .listing-form {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  font-family: 'Courgette';
 }
 
 .listing-form label {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
   font-size: 16px;
-  color: #726159;
-  font-family: Arial, sans-serif;
+  font-weight: bold;
+  color: #4d3b31;
 }
 
-.listing-form input{
-  padding: 10px;
-  border: 1px solid #d1c1b6;
-  border-radius: 5px;
-  font-size: 14px;
-  margin-top: 5px;
+.listing-form input {
+  margin-top: 8px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px;
+  color: #5d4639;
+  background-color: #fbf2e7;
   outline: none;
-  border-color: #8b766d;
+  transition: border-color 0.3s ease;
 }
 
-.submit-btn {
-  padding: 10px 20px;
-  background-color: #524139;
-  color: white;
+button {
+  margin-top: 15px;
+  padding: 12px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
+  background-color: #503b31;
+  color: #fff;
   font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
-  align-self: center;
+  transition: background-color 0.3s ease;
 }
 
-.submit-btn:hover {
-  background-color: #41322a;
+button:hover {
+  background-color: #413027;
 }
 

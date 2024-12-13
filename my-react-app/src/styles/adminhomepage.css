@@ -40,7 +40,8 @@
 
 .user-card p {
   margin: 5px 0;
-  font-size: 15px;
+  font-size: 18px;
+  font-family: 'Times New Roman', Times, serif;
   color: #4a4242;
 }
 
@@ -80,19 +81,49 @@
 }
 
 button {
-  padding: 10px 15px;
+  padding: 10px;
   border: none;
   border-radius: 15px;
   cursor: pointer;
-  margin-right: 10px;
+  margin-right: 2px;
 }
 
 button.extend-duration{
+  width: 150px;
   background-color: #4d3b31;
 }
+
 button.extend-duration:hover{
   background-color: #32261f;
 }
+
+button.delete{
+  width: 130px;
+  height: 37px;
+  text-align: center;
+}
+
 button.delete:hover{
   background-color: #a51a1a;
+}
+
+.expired-listings {
+  margin-top: 40px;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.expired-listings h2 {
+  font-family: 'Courgette';
+  margin-bottom: 15px;
+  color: #463b36;
+  font-size: 30px;
+  border-bottom: 2px solid #463b36;
+  padding-bottom: 5px;
+}
+
+.expired-listings .listing-card {
+  background-color: #e4d7ce; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  opacity: 0.6;
 }

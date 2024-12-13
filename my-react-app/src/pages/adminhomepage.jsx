@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import '../styles/adminhomepage.css'
 
 const AdminHomePage = () => {
-  const [listings, setListings] = useState([])
+  const [activeListings, setActiveListings] = useState([])
+  const [expiredListings, setExpiredListings] = useState([])
   const [users, setUsers] = useState([])
   const [loadingListings, setLoadingListings] = useState(true)
   const [loadingUsers, setLoadingUsers] = useState(true)
@@ -13,17 +14,29 @@ const AdminHomePage = () => {
     const token = localStorage.getItem('adminToken')
     if (!token) {
       alert('Unauthorized access. Please log in as admin.')
-      navigate('/login') 
+      navigate('/login')
       return
     }
     try {
       const response = await fetch('http://localhost:3001/admin/all_listings', {
         headers: { Authorization: `Bearer ${token}` },
       })
-      if (!response.ok) 
-      throw new Error('Failed to fetch listings.')
+      if (!response.ok) throw new Error('Failed to fetch listings.')
       const data = await response.json()
-      setListings(data)
+
+      const active = data
+        .filter((listing) => !isExpired(listing.END_AT))
+        .map((listing) => ({
+          ...listing,
+          remainingTime: calculateRemainingTime(listing.END_AT),
+        }))
+
+      const expired = data
+        .filter((listing) => isExpired(listing.END_AT))
+        .map((listing) => ({ ...listing, remainingTime: 'Expired' }))
+
+      setActiveListings(active)
+      setExpiredListings(expired)
     } catch (error) {
       console.error('Error fetching listings:', error.message)
     } finally {
@@ -37,8 +50,7 @@ const AdminHomePage = () => {
       const response = await fetch('http://localhost:3001/admin/view_users', {
         headers: { Authorization: `Bearer ${token}` },
       })
-      if (!response.ok) 
-      throw new Error('Failed to fetch users.')
+      if (!response.ok) throw new Error('Failed to fetch users.')
       const data = await response.json()
       setUsers(data)
     } catch (error) {
@@ -46,6 +58,27 @@ const AdminHomePage = () => {
     } finally {
       setLoadingUsers(false)
     }
+  }
+
+  const isExpired = (endAt) => {
+    const endTime = new Date(endAt).getTime()
+    const now = Date.now()
+    return endTime <= now
+  }
+
+  const calculateRemainingTime = (endAt) => {
+    const endTime = new Date(endAt).getTime()
+    const now = Date.now()
+    const timeLeft = endTime - now
+
+    if (timeLeft <= 0){
+      return 'Expired'
+    }
+
+    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24))
+    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60))
+    return `${days}d ${hours}h ${minutes}m`
   }
 
   const handleEditDuration = async (id) => {
@@ -95,14 +128,10 @@ const AdminHomePage = () => {
   }, [])
 
   return (
-    <div className='admin-home'>
+    <div className='home'>
       <h1>Welcome, Admin</h1>
-  
       <div className='admin-section'>
         <h2>Registered Users</h2>
-        {loadingUsers ? (
-          <p>Loading users...</p>
-        ) : users.length > 0 ? (
           <div className='users'>
             {users.map((user) => (
               <div key={user.ID} className='user-card'>
@@ -112,43 +141,43 @@ const AdminHomePage = () => {
               </div>
             ))}
           </div>
-        ) : (
-          <p>No users found.</p>
-        )}
       </div>
-  
       <div className='admin-section'>
         <h2>Listings</h2>
-        {loadingListings ? (
-          <p>Loading listings...</p>
-        ) : listings.length > 0 ? (
-          <div className='listings'>
-            {listings.map((listing) => (
-              <div key={listing.ID} className='listing-card'>
-                <img src={`http://localhost:3001${listing.IMAGE_URL}`} alt={listing.NAME} className='listing-image' />
-                <div className='listing-info'>
-                  <h3>{listing.NAME}</h3>
-                  <p>Category: {listing.CATEGORY}</p>
-                  <p>Duration: {listing.DURATION} day/s</p>
-                  <p>Ends At: {new Date(listing.END_AT).toLocaleString()}</p>
-                  <p>Starting Bid: £{listing.STARTING_BID}</p>
-                  <p>Current Bid: £{listing.CURRENT_BID}</p>
-                  <button className='extend-duration' onClick={() => handleEditDuration(listing.ID)}>
-                    Extend Duration
-                  </button>
-                  <button className='delete' onClick={() => handleDelete(listing.ID)}>
-                    Delete
-                  </button>
+            <div className='listings'>
+              {activeListings.map((listing) => (
+                <div key={listing.ID} className='listing-card'>
+                  <img src={`http://localhost:3001${listing.IMAGE_URL}`} alt={listing.NAME} className='listing-image' />
+                  <div className='listing-info'>
+                    <h3>{listing.NAME}</h3>
+                    <p>Category: {listing.CATEGORY}</p>
+                    <p>Current Bid: £{listing.CURRENT_BID}</p>
+                    <p>Remaining Time: {listing.remainingTime}</p>
+                    <button className='extend-duration' onClick={() => handleEditDuration(listing.ID)}>Extend Duration</button>
+                    <button className='delete' onClick={() => handleDelete(listing.ID)}>Delete</button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+        </div>
+
+    <div className='expired-listings'>
+      <h2>Expired Listings</h2>
+      {expiredListings.map((listing) => (
+      <div key={listing.ID} className='listing-card'>
+        <img src={`http://localhost:3001${listing.IMAGE_URL}`} alt={listing.NAME} className='listing-image' />
+          <div className='listing-info'>
+            <h3>{listing.NAME}</h3>
+            <p>Category: {listing.CATEGORY}</p>
+            <p>Current Bid: £{listing.CURRENT_BID}</p>
+            <p>Remaining Time: {listing.remainingTime}</p>
+            <button className='extend-duration' onClick={() => handleEditDuration(listing.ID)}>Extend Duration</button>
+            <button className='delete' onClick={() => handleDelete(listing.ID)}>Delete</button>
           </div>
-        ) : (
-          <p>No listings found.</p>
-        )}
       </div>
+      ))}
     </div>
-  )
-}
+  </div>
+)}
 
 export default AdminHomePage
