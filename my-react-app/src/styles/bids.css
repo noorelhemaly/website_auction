@@ -1,0 +1,41 @@
+.bids {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+.bids h2 {
+    font-family:'Dancing Script';
+    font-size: 50px;
+    text-align: center;
+    color: #4b0d1b;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+  
+.bids-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+  
+.bids-table td {
+    border: 1px solid #f4ded0;
+    padding: 12px;
+    text-align: center;
+}
+  
+.bids-table th {
+    padding: 12px;
+    text-align: center;
+    background-color: #4b0d1b;
+    font-weight: bold;
+    color: #ffffff;
+}
+  
+.bids-table tr:nth-child(even) {
+    background-color: #f7e9db;
+}
+  

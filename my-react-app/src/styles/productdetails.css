@@ -1,99 +1,144 @@
 .product-details {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    max-width: 1200px;
-    margin: auto;
-}
-  
-.product-image {
-    width: 300px;
-    height: auto;
-    border-radius: 8px;
-    margin-right: 20px;
-}
-  
-.product-info {
-    display: flex; 
-    background-color: #f7e9db; 
-    flex-wrap: wrap;
-    flex-direction: column;
-    align-items: center; 
-    justify-content: center;
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1200px;
+  margin: auto;
+  padding: 50px;
 }
 
-.product-info h1{
-    font-size: 50px;
+.product-main {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
 }
-  
-.product-info td {
-    padding: 10px;
-    width: 320px;
-    font-family: 'Dancing Font';
-    color: #51423c;
-    font-size: 18px;
+
+.product-image {
+  width: 400px;
+  height: auto;
+  border-radius: 15px;
+  margin-right: 0%;
+  padding: 0%;
 }
-  
-.bidding-button {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #4b0d1b;
-    color: white;
-    border: none;
-    border-radius: 5px;
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  background-color: #f7e9db;
+  max-width: 700px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: left;
 }
-  
-.bidding-button:hover {
-    background-color: #7d2539;
+
+.product-info h1 {
+  font-family: 'Courgette';
+  font-size: 35px;
+  text-align: center;
+  margin: 15px;
+  color: #4b0d1b;
+}
+
+.product-info table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.product-info table td {
+  padding: 15px;
+  border: 1px solid #f4ded0;
+  text-align: left;
+  font-size: 16px;
+  color: #555;
+}
+
+.bid-section {
+  text-align: center;
+}
+
+.bid-input {
+  padding: 8px;
+  font-size: 15px;
+  width: 150px; 
+  text-align: center;
+  border-radius: 4px; 
+}
+
+.bid-button {
+  background-color: #4b0d1b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.bid-button:hover {
+  background-color: #7d2539;
+}
+
+.bid-message{
+  font-family:'Times New Roman', Times, serif;
+  font-size: 17px;
+}
+.bid-history {  
+  display: flex;
+  flex-direction: column;
+  background-color: #f7e9db;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 40px;
+  width: 100%;
+}
+
+.bid-history h2 {
+  font-family: 'Courgette';
+  font-size: 35px;
+  text-align: center;
+  margin: 15px;
+  color: #4b0d1b;
+}
+
+.bid-history table {
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.bid-history table td {
+  border: 1px solid #f4ded0;
+  padding: 8px;
+  text-align: center;
+}
+
+.bid-history table th {
+
+  padding: 8px;
+  text-align: center;
+  background-color: #4b0d1b;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.bid-history table tr:nth-child(even) {
+  background-color: #fbf2e7;
 }
 
 @media (max-width: 768px) {
-    .product-info {
-        width: 90%;
-    }
+  .product-main {
+      flex-direction: column;
+      align-items: center;
+  }
 
-    .product-image {
-        max-width: 300px;
-    }
+  .product-image {
+      width: 90%;
+      margin-bottom: 20px;
+  }
+
+  .product-info {
+      width: 90%;
+  }
 }
-.bid-history {
-    margin-top: 20px;
-  }
-  
-  .bid-history h2 {
-    text-align: center;
-    margin-bottom: 10px;
-  }
-  
-  .bid-history table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-  }
-  
-  .bid-history table th,
-  .bid-history table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-  }
-  
-  .bid-history table th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-  }
-  
-  .bid-history table tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  .bid-history table tr:hover {
-    background-color: #f1f1f1;
-  }
-  

@@ -46,6 +46,9 @@ const Header = () => {
             <Link to='/watches' className='link'>
               Watches
             </Link>
+            <Link to="/mybids" className='link'>
+              My Bids
+            </Link> 
             <Link to='/about' className='link'>
               About us
             </Link>

@@ -26,10 +26,10 @@ const LoginForm = () => {
         const data = await response.json()
 
         if (data.admin) {
-            localStorage.setItem('adminToken', data.token) // Store admin token
+            localStorage.setItem('adminToken', data.token) 
             navigate('/admin/home')
         } else {
-            localStorage.setItem('userToken', data.token) // Store user token
+            localStorage.setItem('userToken', data.token)
             navigate('/')
         }
     } catch (error) {

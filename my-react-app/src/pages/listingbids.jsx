@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import '../styles/bids.css'
 
 const AdminBids = () => {
   const [bids, setBids] = useState([])
@@ -35,17 +36,15 @@ const AdminBids = () => {
   }
 
   return (
-    <div className='admin-bids'>
+    <div className='bids'>
       <h2>Bidding History</h2>
       <table className='bids-table'>
-        <thead>
           <tr>
             <th>User</th>
             <th>Bid Amount (£)</th>
             <th>Time</th>
             <th>Listing</th>
           </tr>
-        </thead>
         <tbody>
           {bids.map((bid) => (
             <tr key={bid.BID_ID}>
