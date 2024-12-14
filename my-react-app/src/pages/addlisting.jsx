@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react'
 import '../styles/addlisting.css'
 
 const CreateListing = () => {
@@ -16,18 +15,6 @@ const CreateListing = () => {
     duration: '',
     image: null,
   })
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    const token = localStorage.getItem('adminToken')
-    if (!token) {
-      alert('Unauthorized access. Please log in as admin.')
-      navigate('/login')
-    } else {
-      setIsAuthenticated(true)
-    }
-  }, [navigate])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -47,15 +34,11 @@ const CreateListing = () => {
     })
 
     try {
-      const token = localStorage.getItem('adminToken')
       const response = await fetch('http://localhost:3001/admin/create_listing', {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include", 
         body: data,
       })
-
       if (response.ok) {
         alert('Listing created successfully!')
         setFormData({
@@ -77,10 +60,6 @@ const CreateListing = () => {
     } catch (error) {
       console.error('Error creating listing:', error.message)
     }
-  }
-
-  if (!isAuthenticated) {
-    return null 
   }
 
   return (

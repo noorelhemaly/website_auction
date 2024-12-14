@@ -3,14 +3,13 @@ import '../styles/bids.css'
 
 const AdminBids = () => {
   const [bids, setBids] = useState([])
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchBids = async () => {
       try {
-        const token = localStorage.getItem('adminToken')
         const response = await fetch('http://localhost:3001/admin/bids', {
-          headers: { Authorization: `Bearer ${token}` },
+          method: "GET",
+          credentials: "include",
         })
         if (!response.ok) {
           throw new Error('Failed to fetch bids.')
@@ -19,21 +18,10 @@ const AdminBids = () => {
         setBids(data)
       } catch (error) {
         console.error('Error fetching bids:', error.message)
-      } finally {
-        setLoading(false)
       }
     }
-
     fetchBids()
   }, [])
-
-  if (loading) {
-    return <div>Loading bids...</div>
-  }
-
-  if (bids.length === 0) {
-    return <div>No bids available.</div>
-  }
 
   return (
     <div className='bids'>

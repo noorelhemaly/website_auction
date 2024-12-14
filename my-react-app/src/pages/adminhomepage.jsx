@@ -1,25 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import '../styles/adminhomepage.css'
 
 const AdminHomePage = () => {
   const [activeListings, setActiveListings] = useState([])
   const [expiredListings, setExpiredListings] = useState([])
   const [users, setUsers] = useState([])
-  const [loadingListings, setLoadingListings] = useState(true)
-  const [loadingUsers, setLoadingUsers] = useState(true)
-  const navigate = useNavigate()
 
   const fetchListings = async () => {
-    const token = localStorage.getItem('adminToken')
-    if (!token) {
-      alert('Unauthorized access. Please log in as admin.')
-      navigate('/login')
-      return
-    }
     try {
       const response = await fetch('http://localhost:3001/admin/all_listings', {
-        headers: { Authorization: `Bearer ${token}` },
+        method: "GET",
+        credentials: "include", 
       })
       if (!response.ok) throw new Error('Failed to fetch listings.')
       const data = await response.json()
@@ -39,24 +30,20 @@ const AdminHomePage = () => {
       setExpiredListings(expired)
     } catch (error) {
       console.error('Error fetching listings:', error.message)
-    } finally {
-      setLoadingListings(false)
     }
   }
 
   const fetchUsers = async () => {
-    const token = localStorage.getItem('adminToken')
     try {
       const response = await fetch('http://localhost:3001/admin/view_users', {
-        headers: { Authorization: `Bearer ${token}` },
+        method: "GET",
+        credentials: "include", 
       })
       if (!response.ok) throw new Error('Failed to fetch users.')
       const data = await response.json()
       setUsers(data)
     } catch (error) {
       console.error('Error fetching users:', error.message)
-    } finally {
-      setLoadingUsers(false)
     }
   }
 
@@ -87,11 +74,10 @@ const AdminHomePage = () => {
       alert('Invalid input. Please enter a valid number.')
       return
     }
-    const token = localStorage.getItem('adminToken')
     try {
       const response = await fetch(`http://localhost:3001/admin/edit_duration/${id}/${newDuration}`, {
-        method: 'PUT',
-        headers: { Authorization: `Bearer ${token}` },
+        method: "PUT",
+        credentials: "include", 
       })
       if (response.ok) {
         alert('Duration updated successfully!')
@@ -105,11 +91,10 @@ const AdminHomePage = () => {
   }
 
   const handleDelete = async (id) => {
-    const token = localStorage.getItem('adminToken')
     try {
       const response = await fetch(`http://localhost:3001/admin/delete_listing/${id}`, {
         method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: "include",
       })
       if (response.ok) {
         alert('Listing deleted successfully!')

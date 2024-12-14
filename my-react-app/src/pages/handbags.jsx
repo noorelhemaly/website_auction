@@ -1,30 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import '../styles/listingspage.css'
 
 const Handbags = () => {
   const [activeHandbags, setActiveHandbags] = useState([])
   const [expiredHandbags, setExpiredHandbags] = useState([])
-  const [loading, setLoading] = useState(true)
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    const token = localStorage.getItem('userToken')
-    if (!token) {
-      if (!sessionStorage.getItem('alertShown')) {
-        alert('You must log in to access this page.')
-        sessionStorage.setItem('alertShown', true)
-      }
-      navigate('/register')
-    }
-  }, [navigate])
 
   useEffect(() => {
     const fetchHandbags = async () => {
       try {
-        const response = await fetch('http://localhost:3001/listings/handbags', {
-          headers: { Authorization: `Bearer ${localStorage.getItem('userToken')}` },
-        })
+        const response = await fetch('http://localhost:3001/listings/handbags')
         if (!response.ok) {
           throw new Error('Failed to fetch handbags.')
         }
@@ -47,8 +32,6 @@ const Handbags = () => {
         )
       } catch (error) {
         console.error('Failed to fetch handbags:', error)
-      } finally {
-        setLoading(false)
       }
     }
     fetchHandbags()
@@ -75,27 +58,6 @@ const Handbags = () => {
     const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000)
 
     return `${days}d ${hours}h ${minutes}m ${seconds}s`
-  }
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveHandbags((prevHandbags) =>
-        prevHandbags.map((bag) => ({
-          ...bag,
-          remainingTime: calculateRemainingTime(bag.END_AT),
-        }))
-      )
-    }, 1000)
-
-    return () => clearInterval(interval)
-  }, [activeHandbags])
-
-  if (loading) {
-    return <div>Loading handbags...</div>
-  }
-
-  if (activeHandbags.length === 0 && expiredHandbags.length === 0) {
-    return <div>No handbags available.</div>
   }
 
   return (

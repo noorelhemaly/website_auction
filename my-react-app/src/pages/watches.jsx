@@ -1,30 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import '../styles/listingspage.css'
 
 const Watches = () => {
   const [activeWatches, setActiveWatches] = useState([])
   const [expiredWatches, setExpiredWatches] = useState([])
-  const [loading, setLoading] = useState(true)
-  const navigate = useNavigate()
 
-  useEffect(() => {
-    const token = localStorage.getItem('userToken')
-    if (!token) {
-      if (!sessionStorage.getItem('alertShown')) {
-        alert('You must log in to access this page.')
-        sessionStorage.setItem('alertShown', true)
-      }
-      navigate('/register')
-    }
-  }, [navigate])
 
   useEffect(() => {
     const fetchWatches = async () => {
       try {
-        const response = await fetch('http://localhost:3001/listings/watches', {
-          headers: { Authorization: `Bearer ${localStorage.getItem('userToken')}` },
-        })
+        const response = await fetch('http://localhost:3001/listings/watches')
         if (!response.ok) {
           throw new Error('Failed to fetch watches.')
         }
@@ -47,8 +33,6 @@ const Watches = () => {
         )
       } catch (error) {
         console.error('Failed to fetch watches:', error)
-      } finally {
-        setLoading(false)
       }
     }
     fetchWatches()
@@ -76,28 +60,6 @@ const Watches = () => {
     
     return `${days}d ${hours}h ${minutes}m ${seconds}s`
   }
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveWatches((prevWatches) =>
-        prevWatches.map((watch) => ({
-          ...watch,
-          remainingTime: calculateRemainingTime(watch.END_AT),
-        }))
-      )
-    }, 1000)
-
-    return () => clearInterval(interval)
-  }, [activeWatches])
-
-  if (loading) {
-    return <div>Loading watches...</div>
-  }
-
-  if (activeWatches.length === 0 && expiredWatches.length === 0) {
-    return <div>No watches available.</div>
-  }
-
   return (
     <div className="listings-page">
       <h1>Watches Collection</h1>

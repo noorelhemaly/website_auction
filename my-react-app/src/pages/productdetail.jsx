@@ -7,12 +7,9 @@ const ProductDetails = () => {
   const [product, setProduct] = useState(null)
   const [bidHistory, setBidHistory] = useState([])
   const [remainingTime, setRemainingTime] = useState('')
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
   const [bidAmount, setBidAmount] = useState('')
   const [message, setMessage] = useState('')
 
-  // Fetch product details
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
@@ -25,9 +22,6 @@ const ProductDetails = () => {
         updateRemainingTime(data.END_AT)
       } catch (error) {
         console.error('Error fetching product details:', error.message)
-        setError('Failed to load product details.')
-      } finally {
-        setLoading(false)
       }
     }
 
@@ -48,7 +42,6 @@ const ProductDetails = () => {
     fetchBidHistory()
   }, [id])
 
-  // Calculate and update remaining time
   const updateRemainingTime = (endAt) => {
     const endTime = new Date(endAt).getTime(); 
     const now = new Date().getTime(); 
@@ -65,16 +58,14 @@ const ProductDetails = () => {
     const seconds = Math.floor((difference % (1000 * 60)) / 1000);
   
     setRemainingTime(`${days}d ${hours}h ${minutes}m ${seconds}s`);
-  };
+  }
   
-
-  // Update remaining time every second
   useEffect(() => {
     const interval = setInterval(() => {
       if (product) {
         updateRemainingTime(product.END_AT)
       }
-    }, 1000) // Update every second
+    }, 1000) 
 
     return () => clearInterval(interval)
   }, [product])
@@ -88,16 +79,13 @@ const ProductDetails = () => {
     }
 
     try {
-      const token = localStorage.getItem('userToken')
       const response = await fetch('http://localhost:3001/bid', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include", 
+        headers: {'Content-Type': 'application/json',},
         body: JSON.stringify({
-          listingId: product.ID,
-          bidAmount: parseFloat(bidAmount),
+        listingId: product.ID,
+        bidAmount: parseFloat(bidAmount),
         }),
       })
 
@@ -109,21 +97,12 @@ const ProductDetails = () => {
         setMessage('Bid placed successfully!')
         setBidAmount('') // Clear input
       } else {
-        const errorText = await response.text()
-        setMessage(`Error: ${errorText}`)
+        setMessage("You must be a registered user")
       }
     } catch (error) {
       console.error('Error placing bid:', error.message)
       setMessage('Failed to place bid. Please try again.')
     }
-  }
-
-  if (loading) {
-    return <p>Loading product details...</p>
-  }
-
-  if (error) {
-    return <p className="error">{error}</p>
   }
 
   if (!product) {

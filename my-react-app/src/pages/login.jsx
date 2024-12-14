@@ -16,21 +16,17 @@ const LoginForm = () => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password }),
+            credentials : 'include'
         })
-
-        if (!response.ok) {
-            const errorMessage = await response.text()
-            throw new Error(errorMessage || 'Login failed')
-        }
-
         const data = await response.json()
-
         if (data.admin) {
             localStorage.setItem('adminToken', data.token) 
             navigate('/admin/home')
+            window.location.reload()
         } else {
             localStorage.setItem('userToken', data.token)
             navigate('/')
+            window.location.reload()
         }
     } catch (error) {
         console.error('Login failed:', error.message)
